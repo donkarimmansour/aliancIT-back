@@ -1,8 +1,8 @@
 const mongoose = require("mongoose")
 
 
-const DB_URL = "mongodb://localhost:27017/issam"
-//const DB_URL = "mongodb+srv://admin:admin@rdv.o6wsj.mongodb.net/ectest"
+//const DB_URL = "mongodb://localhost:27017/issam"
+const DB_URL = "mongodb+srv://admin:admin@rdv.o6wsj.mongodb.net/issam"
 
 function DB(){
     return mongoose.connect(DB_URL, (err) => {
