@@ -16,6 +16,7 @@ const ApiEndpoints = {
     count: `/count`,
     suspension: `/suspension/:id`,
     forgotPassword: `/forgot-password`,
+    resetPassword: `/reset-password/:id`,
     confirmEmail: `/confirm-email/:id`,
   },
   ArticlesEndpoints: {

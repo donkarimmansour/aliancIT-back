@@ -1,7 +1,7 @@
 const UserControlles = require("../controlles/users")
 const {  handleError , idValidator , passport , ApiEndpoints , HandleValidatorError} = require("../common/routersImports")
 const router = require("express").Router()
-const {SginupValidator , LoginValidator , emailValidator  , ImageValidator  , EditValidator , AccountSuspendedValidator} = require("../middlewares/validators")
+const {SginupValidator , LoginValidator , emailValidator  , ImageValidator  , EditValidator , AccountSuspendedValidator, resetPasswordValidator} = require("../middlewares/validators")
 
 // getall
 router.get(ApiEndpoints.UserEndpoints.list , passport.authenticate("userOradmin", {session: false}) 
@@ -32,6 +32,9 @@ router.put(ApiEndpoints.UserEndpoints.forgotPassword , emailValidator,  HandleVa
 
 // confirm email
 router.put(ApiEndpoints.UserEndpoints.confirmEmail , idValidator , UserControlles.confirmEmailUser)
+
+// reset password
+router.put(ApiEndpoints.UserEndpoints.resetPassword, passport.authenticate("userOradmin", {session: false}) , resetPasswordValidator, idValidator , HandleValidatorError , UserControlles.resetPasswordUser, handleError)
 
 // Account Suspension
 router.put(ApiEndpoints.UserEndpoints.suspension , passport.authenticate("admin", {session: false}) , AccountSuspendedValidator, idValidator , HandleValidatorError , UserControlles.Suspension , handleError)

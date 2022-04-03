@@ -54,6 +54,12 @@ const LoginValidator = [
     check("isAccountSuspended").notEmpty().withMessage("type is required"),
  ]
 
+ const resetPasswordValidator = [
+   check("oldpassword").notEmpty().withMessage("old password is required"),
+   check("password").notEmpty().withMessage("password is required"),
+]
+
+
 const CreateArticleValidator= [
    check("title").notEmpty().withMessage("title field is required") ,
    check("description").notEmpty().withMessage("description field is required") ,
@@ -89,5 +95,6 @@ module.exports = {
     DistinctValidator , 
     CreateArticleValidator , 
     ReviewArticleValidator ,
-    LikeValidator 
+    LikeValidator ,
+    resetPasswordValidator
 }

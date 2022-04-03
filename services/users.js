@@ -128,7 +128,7 @@ const login = (email, password) => {
 
 
 // edit User
-const editUser = (id ,firstname , lastname ,email , password , gender) => {
+const editUser = (id ,firstname , lastname ,email , gender) => {
     return new Promise((resolve, reject) => { // update user
        // check id
         UsersRquest.findOne({}, (errFind, user) => {
@@ -140,12 +140,9 @@ const editUser = (id ,firstname , lastname ,email , password , gender) => {
   
             } else {
 
-                //update
-                const newpassword = (password == "") ? user.password : user.hashPassword(password)
-        
+                //update        
                 UsersRquest.updateOne({}, {
-                     firstname , lastname ,email , password : newpassword  ,
-                     gender ,
+                     firstname , lastname ,email , gender ,
                      updatedAt: Date.now()
                 }, (errUpdate, doc) => {
                     if (errUpdate){ 
@@ -252,6 +249,55 @@ const forgotPasswordUser = (email) => {
     })
 }
 
+
+// reset Password User
+const resetPasswordUser = (id , oldpassword , password) => {
+    return new Promise((resolve, reject) => { // update user
+       // check id
+        UsersRquest.findOne({}, (errFind, user) => {
+            if (errFind) 
+                reject(errFind)
+            
+            if (!user) {
+                reject("id not exist")
+
+            } else {
+
+                //update
+
+                if(!user.comparePassword(oldpassword)){
+                    reject("old password is incorrect")
+
+                }else{
+
+                    UsersRquest.updateOne({}, {
+                        password: new UsersRquest().hashPassword(password),
+                        updatedAt: Date.now()
+                    }, (errUpdate, doc) => {
+                        if (errUpdate) 
+                            reject(errUpdate)
+                        
+                        if (doc.modifiedCount > 0) {
+
+                           resolve("modified")
+            
+                        } else {
+                            reject("something went wrong")
+            
+                        }
+            
+                    }).where("_id").equals(id)
+                }
+
+               
+            }
+
+        }).where("_id").equals(id)
+
+
+
+    })
+}
 
 
 // confirm email User
@@ -414,5 +460,5 @@ module.exports = {
      forgotPasswordUser  ,
      editImage ,
      getUsersCount , 
-     deleteUser
+     deleteUser , resetPasswordUser
 }

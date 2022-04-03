@@ -38,10 +38,10 @@ const signup = (req, res) => {
 
 // edit User
 const editUser = (req, res) => {
-    const {firstname , lastname ,email , password , gender} = req.body ;
+    const {firstname , lastname ,email  , gender} = req.body ;
     const {id} = req.params ;
 
-    UsersModel.editUser(id ,firstname , lastname ,email , password , gender).then(result => {
+    UsersModel.editUser(id ,firstname , lastname ,email  , gender).then(result => {
         res.status(codes.ok).json({err: false, msg : result})
     }).catch(result => {
         res.status(codes.badRequest).json({err: true, msg : result})
@@ -65,6 +65,18 @@ const forgotPasswordUser = (req, res) => {
     const {email} = req.body ;
 
     UsersModel.forgotPasswordUser(email).then(result => {
+        res.status(codes.ok).json({err: false, msg : result})
+    }).catch(result => {
+        res.status(codes.badRequest).json({err: true, msg : result})
+    })
+}
+
+// reset Password User
+const resetPasswordUser = (req, res) => {
+    const {id} = req.params ;
+    const { oldpassword , password} = req.body ;
+
+    UsersModel.resetPasswordUser(id , oldpassword , password).then(result => {
         res.status(codes.ok).json({err: false, msg : result})
     }).catch(result => {
         res.status(codes.badRequest).json({err: true, msg : result})
@@ -129,5 +141,6 @@ module.exports = {
      forgotPasswordUser ,
      editImage ,
      getUsersCount ,
-     deleteUser
+     deleteUser ,
+     resetPasswordUser
 }
